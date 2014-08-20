@@ -15,7 +15,6 @@ Binaries, webdrivers and a couple of helper functions for the [RSelenium][] pack
 ### Tutorial
 The [RSelenium][] Github page has a couple of nice tutorials available. Furthemore, there is a nice [RSelenium Webinar][] available.
 
-
 ## Reason for the RSeleniumUtilities package
 
 The [CRAN Repository Policy][] propose, as a general rule, that neither data nor documentation should exceed 5MB. Where a large amount of "data" (read here jar files) is required, consideration should be given to a separate data-only package which can be updated only rarely (since older versions of packages are archived in perpetuity).
