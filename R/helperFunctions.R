@@ -9,8 +9,7 @@
 #' @export
 #' @section Detail:
 #' The profile directory is contained in the user directory and by default is named "Default" 
-firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="default",
-                          baseEncrypton=TRUE){
+firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="default", baseEncrypton=TRUE){
   # System information
   sysName <- Sys.info()["sysname"][[1]]
   usrName <- Sys.info()["user"][[1]]
@@ -54,8 +53,7 @@ firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="d
 #' @export
 #' @section Detail:
 #' The profile directory is contained in the user directory and by default is named "Default" 
-chromeDriver <- function(useProfile=FALSE, profileName="Default", profileDir="Default",
-                         internalTesting=FALSE){
+chromeDriver <- function(useProfile=FALSE, profileName="Default", profileDir="Default", internalTesting=FALSE){
   
   # System information
   sysName <- Sys.info()["sysname"][[1]]
