@@ -26,7 +26,7 @@ For the above reason the __RSeleniumUtilities__ is not available on CRAN, but yo
 
 ```
 library(devtools)
-install_github(repo="greenore/RSeleniumBinaries")
+install_github(repo="greenore/RSeleniumUtilities")
 ```
 
 [Selenium]: http://docs.seleniumhq.org/
