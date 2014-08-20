@@ -1,7 +1,7 @@
-RSeleniumBinaries
-=================
+RSeleniumUtils
+==============
 
-Binaries and webdrivers for the RSelenium package (e.g., selenium-server-standalone.jar)
+Binaries, webdrivers and different utilty functions for the RSelenium package (e.g., selenium-server-standalone.jar)
 
 ## Introduction
 
@@ -11,7 +11,6 @@ Binaries and webdrivers for the RSelenium package (e.g., selenium-server-standal
 - Firefox
 - Google Chrome
 - Internet Explorer
-- Phantomjs (headless browser)
 
 ### Tutorial
 The [RSelenium][] Github page has a couple of nice tutorials available. Furthemore, there is a nice [RSelenium Webinar][] available.
