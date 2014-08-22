@@ -16,17 +16,17 @@ firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="d
   
   if(useProfile & profileDir == "default"){
     if(sysName == "Windows") {
-      dataDir <- paste0("C:/Users/", usrName, "/AppData/Roaming/Mozilla/Firefox/Profiles")
+      profileDir <- paste0("C:/Users/", usrName, "/AppData/Roaming/Mozilla/Firefox/Profiles")
     }
     
     if(sysName == "Linux") {
       profileDir <- paste0("/home/", usrName, "/.mozilla/firefox")
     }
     
-    profFiles <- list.files(dataDir)
+    profFiles <- list.files(profileDir)
     expr <- paste0("[[:alnum:]]{1, }", ".", profileName)
     profFile <- regmatches(profFiles, regexpr(expr, profFiles))
-    profDir <- paste0(dataDir, "/", profFile)
+    profDir <- paste0(profileDir, "/", profFile)
     fprof <- getFirefoxProfile(profDir, useBase=baseEncrypton)
     remDr <- remoteDriver(browserName='firefox', extraCapabilities=fprof)
     
