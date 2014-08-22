@@ -36,6 +36,9 @@ installUtilities <- function(installIE=TRUE, installChrome=TRUE){
     iePath <- paste0(utilPath, "/bin/", bitFormat, "InternetExplorer", sysName, "/IEDriverServer.exe")
   }
   
+  C:\Users\b029580\NoBackupData\Software\R\R-3.1.1\library\RSeleniumUtilities\bin\x86ChromeWindows\
+  
+  
   if(sysName == "Linux") {
     installPath <- paste0("/home/", usrName, "/.selenium")
     chromePath <- paste0(utilPath, "/bin/", bitFormat, "Chrome", sysName)
@@ -45,10 +48,10 @@ installUtilities <- function(installIE=TRUE, installChrome=TRUE){
 
   # Remove old directory
   unlink(file.path(installPath), recursive=TRUE, force=TRUE)
-  dir.create(dataDir)
+  dir.create(installPath)
 
   # Copy files
-  file.copy(from=chromePath, to=dataDir)
+  file.copy(from=chromePath, to=installPath)
   
   
 # Create a hidden Selenium directory if it doesn't exist yet
