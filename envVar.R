@@ -24,7 +24,7 @@ getPath <- function(){
   seleniumPath <<- paste0(utilPath, "/bin/seleniumJar/selenium-server-standalone.jar")
 }
 
-installUtilities <- function(installIE=TRUE, installChrome=TRUE){
+copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
   sysInfo()
   
   # Remove and create hidden selenium directory
@@ -36,6 +36,13 @@ installUtilities <- function(installIE=TRUE, installChrome=TRUE){
   if(sysName == "Windows") {
     file.copy(from=iePath, to=installPath)
   }
+  
+  if(sysName == "Linux") {
+    # Make file executable
+    system(paste0("chmod +x ", paste0(installPath, "/chromedriver")))
+  }
+  
+  # Copy selenium server jar to the RSelenium bin folder
   file.copy(from=seleniumPath, to=RSeleniumBinPath)
 }
 
@@ -86,7 +93,7 @@ checkPath <- function(){
   }
   
   if(installPath %in% envVar) {
-    message("The Selenium is correctly added to the system environment variables...")
+    message("The path to Selenium is correctly added to the system environment variables...")
     TRUE
   } else {
     warning(paste0("\n\nSelenium is not found in the path variable...\n",
@@ -104,8 +111,8 @@ getPath()
 if(!checkPath()){
   setPath()
 }
-?startServer
-installUtilities(installIE=TRUE, installChrome=TRUE)
+copyUtilities(installIE=TRUE, installChrome=TRUE)
+
 rm(list = ls())
 
-
+paste0("chmod +x ", )
