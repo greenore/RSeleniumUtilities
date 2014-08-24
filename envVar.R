@@ -8,6 +8,7 @@ getPath <- function(){
   sysInfo()
   # System information
   utilPath <<- file.path(find.package("RSeleniumUtilities"))
+  RSeleniumBinPath <<- paste0(file.path(find.package("RSelenium")), '/bin')
   
   if(sysName == "Windows") {
     installPath <<- paste0("C:/Users/", usrName, "/AppData/Local/Selenium/")
@@ -35,7 +36,7 @@ installUtilities <- function(installIE=TRUE, installChrome=TRUE){
   if(sysName == "Windows") {
     file.copy(from=iePath, to=installPath)
   }
-  file.copy(from=seleniumPath, to=installPath)
+  file.copy(from=seleniumPath, to=RSeleniumBinPath)
 }
 
 appendFile <- function(inputTxt, filePath){
@@ -95,11 +96,15 @@ checkPath <- function(){
   }
 }
 
+
+# The Selenium Server was started with 
+# -Dwebdriver.chrome.driver=c:\path\to\your\chromedriver.exe
+
 getPath()
-checkPath()
-
-setPath()
-
+if(!checkPath()){
+  setPath()
+}
+?startServer
 installUtilities(installIE=TRUE, installChrome=TRUE)
 rm(list = ls())
 
