@@ -1,8 +1,11 @@
-# System information
-sysName <- Sys.info()["sysname"][[1]]
-usrName <- Sys.info()["user"][[1]]
-
 setPath <- function(){
+  # System information
+  sysName <- Sys.info()["sysname"][[1]]
+  usrName <- Sys.info()["user"][[1]]
+  
+  # Works, path is missing
+  shell(paste0("C:/Windows/System32/setx.exe PATH '", installPath, "'"), intern=TRUE)
+  
   if(sysName == "Windows"){
     pathName <- "Path="
     envVar <- shell('set Path', intern = T)
@@ -13,7 +16,6 @@ setPath <- function(){
   }  
 }
 
-installUtilities()
 installUtilities <- function(installIE=TRUE, installChrome=TRUE){
   
   # System information
@@ -35,13 +37,13 @@ installUtilities <- function(installIE=TRUE, installChrome=TRUE){
   
   seleniumPath <- paste0(utilPath, "/seleniumJar/selenium-server-standalone.jar")
   
-  # Remove old directory
+  # Remove and create hidden selenium directory
   unlink(file.path(installPath), recursive=TRUE, force=TRUE)
-  
-  # Create a hidden Selenium directory
   dir.create(installPath)
   
   # Copy files
   file.copy(from=chromePath, to=installPath)
+  file.copy(from=iePath, to=installPath)
+  file.copy(from=seleniumPath, to=installPath)
 }
-
+installUtilities()
