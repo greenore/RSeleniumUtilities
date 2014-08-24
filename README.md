@@ -5,24 +5,24 @@ Binaries, webdrivers and a couple of helper functions for the [RSelenium][] pack
 
 ## Introduction
 
-[Selenium][] is a suite of tools in order to automate web browsers. The [RSelenium][] package is intended to provide access to Selenium and use it for web navigation and to ease the path for web scraping and/or web side testing in R. The __RSeleniumUtilities__ package contains the Selenium Server file as well as various driver files.
+[Selenium][] is a open source tool in order to automate web browsers. The [RSelenium][] package is intended to provide access to Selenium and use it for web navigation and to ease the path for web scraping and/or web side testing in R. __RSeleniumUtilities__ is a companion package and contains the Selenium Server file as well as various driver files and helper functions.
 
 ### Available Webbrowsers
-- Firefox
-- Google Chrome
-- Internet Explorer
+- Firefox (Windows & Linux)
+- Google Chrome (Windows & Linux)
+- Internet Explorer (Windows)
 
 ### Tutorial
-The [RSelenium][] Github page has a couple of nice tutorials available. Furthemore, there is a nice [RSelenium Webinar][] available.
+The [RSelenium][] Github page has a couple of nice tutorials available. Furthermore, there is the [RSelenium Webinar][].
 
 ## Reason for the RSeleniumUtilities package
 
-The [CRAN Repository Policy][] propose, as a general rule, that neither data nor documentation should exceed 5MB. Where a large amount of "data" (read here jar files) is required, consideration should be given to a separate data-only package which can be updated only rarely (since older versions of packages are archived in perpetuity).
+The [CRAN Repository Policy][] propose, as a general rule, that neither data nor documentation should exceed 5MB. Where a large amount of "data" (read here jar files and webdriver) is required, consideration should be given to a separate data-only package which can be updated only rarely (since older versions of packages are archived in perpetuity).
 
 As a result of that, the __RSeleniumUtilities__ is a binary and jar files-only package. It exist another package, [RSelenium][], which is intended to provide access to Selenium. 
 
 ## Installation
-For the above reason the __RSeleniumUtilities__ is not available on CRAN, but you can install it from github with:
+The __RSeleniumUtilities__ is not available on CRAN, but you can install it from Github with:
 
 ```
 library(devtools)
