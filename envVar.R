@@ -66,6 +66,7 @@ setPath <- function(){
 
   if(sysName == "Windows") {
     shell(paste0("C:/Windows/System32/setx.exe PATH '", installPath, "'"), intern=TRUE)
+    message(paste0(installPath, "\nadded to the Windows environment path"))
   }
   
   if(sysName == "Linux") {
@@ -91,8 +92,10 @@ checkPath <- function(){
     envVar <- system('echo "$PATH"', intern=TRUE)
     envVar <- unlist(strsplit(envVar, ":"))
   }
+  envVar <- tolower(gsub(pattern="/", replacement="", x=envVar))
+  selPath <- tolower(gsub(pattern="/", replacement="", x=installPath))
   
-  if(installPath %in% envVar) {
+  if(selPath %in% envVar) {
     message("The path to Selenium is correctly added to the system environment variables...")
     TRUE
   } else {
@@ -111,6 +114,7 @@ getPath()
 if(!checkPath()){
   setPath()
 }
+checkPath()
 copyUtilities(installIE=TRUE, installChrome=TRUE)
 
 rm(list = ls())
