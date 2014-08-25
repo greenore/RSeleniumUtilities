@@ -64,32 +64,32 @@ checkEnvVar <- function(pathVar){
   minPathVar <- tolower(gsub(pattern="/", replacement="", x=pathVar))
   
   if(minPathVar %in% minEnvVar) {
-    message(paste0("The path: ", pathVar, " is correctly added to the system environment variables..."))
+    message(paste0("The path: ", pathVar, " is correctly added to the system environment..."))
     TRUE
   } else {
-    warning(paste0("The path: ", pathVar, " is not found in the path variable...\n",
-                   "execute: setPath() or add the variable manually to the path...\n",
+    warning(paste0("The path: ", pathVar, " is not found in the system environment...\n",
+                   "execute: setPathVar() or add the variable manually to the path...\n",
                    "NOTE: It might be that you need to restart the system for changes to take effect..."))
     FALSE
   }
-  
 }
 
 # Setting Path variables
 #-----------------------
-setPathVar <- function(installPath){
+setEnvVar <- function(pathToVar){
+  sysInfo()
   
   if(sysName == "Windows") {
-    shell(paste0("C:/Windows/System32/setx.exe PATH ", installPath), intern=TRUE)
-    message(paste0(installPath, "\nadded to the Windows environment path...\n"))
+    shell(paste0('C:/Windows/System32/setx.exe Path ', pathToVar), intern=TRUE)
+    message(paste0(pathVar, "\nadded to the Windows environment path...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
   
   if(sysName == "Linux") {
     profilePath <<- paste0("/home/", usrName, "/.profile")
     appendFileUnix('# Add Selenium to the PATH Environment', profilePath)
-    appendFileUnix(paste0("export PATH=$PATH:", installPath), profilePath)
-    message(paste0("export PATH=$PATH:", installPath, "\nadded to the .profile file...\n"))
+    appendFileUnix(paste0("export PATH=$PATH:", pathVar), profilePath)
+    message(paste0("export PATH=$PATH:", pathVar, "\nadded to the .profile file...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
 }
@@ -155,33 +155,11 @@ getJavaPath <- function(){
   paste0(javaPath, "/", newestVersion, "/bin/")
 }
 
+getPath()
 javaPath <- getJavaPath()
-
 checkEnvVar(pathVar=installPath)
 checkEnvVar(pathVar=javaPath)
-
-
-envVar
-envVar <- getEnvVar()
-envVar[grep(pattern=javaPath, x=envVar)]
-
-# fullPath <- findPartialTxt(inputVector=envVar, partialTxt="C:/Program Files/Java")
-# envVar[grep("C:/Program Files/Java", envVar)]
-
-
-getPath()
-setPathVar(installPath=installPath)
-
-
-
-
-C:/Program Files/Java/jdk1.7.0_21/bin
-cutTxt
-
-setPath()
-checkPath()
+setEnvVar(pathToVar=paste0(installPath, ';"', javaPath,'"'))
 copyUtilities(installIE=TRUE, installChrome=TRUE)
 
 rm(list = ls())
-
-paste0("chmod +x ", )
