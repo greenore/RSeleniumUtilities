@@ -1,29 +1,18 @@
-# Get System information
+# Overall Meta functions
 #-----------------------
+
+# Get System information
 sysInfo <- function(){
   sysName <<- Sys.info()["sysname"][[1]]
   usrName <<- Sys.info()["user"][[1]]
   bitFormat <<- Sys.info()["machine"][[1]]  
 }
 
-getPath <- function(){
-  sysInfo()
-  # System information
-  utilPath <<- file.path(find.package("RSeleniumUtilities"))
-  RSeleniumBinPath <<- paste0(file.path(find.package("RSelenium")), '/bin')
-  
-  if(sysName == "Windows") {
-    installPath <<- paste0("C:/Users/", usrName, "/AppData/Local/Selenium/")
-    chromePath <<- paste0(utilPath, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver.exe")
-    iePath <<- paste0(utilPath, "/bin/", bitFormat, "InternetExplorer", sysName, "/IEDriverServer.exe")
-  }
-  
-  if(sysName == "Linux") {
-    installPath <<- paste0("/home/", usrName, "/.selenium")
-    chromePath <<- paste0(utilPath, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver")
-  }
-  
-  seleniumPath <<- paste0(utilPath, "/bin/seleniumJar/selenium-server-standalone.jar")
+# Find partial text with the help of regual expressions
+findPartialTxt <- function(inputVector, partialTxt, regex="[[:alnum:][:punct:]]{1, }"){
+  expr <- paste(partialTxt, regex, sep = "")
+  output <- regmatches(inputVector, regexpr(expr, inputVector))
+  output
 }
 
 # Appending to a file on unix systems
@@ -44,11 +33,10 @@ appendFileUnix <- function(inputTxt, filePath){
   }
 }
 
-
-
 # Environmental Variables
 #-------------------------
 getEnvVar <- function(envVarName="Path"){
+  sysInfo()
   
   if(sysName == "Windows") {
     envVarName <- paste0(envVarName, "=")
@@ -72,14 +60,14 @@ getEnvVar <- function(envVarName="Path"){
 checkEnvVar <- function(pathVar){
   envVar <- getEnvVar()
 
-  envVar <- tolower(gsub(pattern="/", replacement="", x=envVar))
-  pathVar <- tolower(gsub(pattern="/", replacement="", x=pathVar))
+  minEnvVar <- tolower(gsub(pattern="/", replacement="", x=envVar))
+  minPathVar <- tolower(gsub(pattern="/", replacement="", x=pathVar))
   
-  if(pathVar %in% envVar) {
-    message("The path to Selenium is correctly added to the system environment variables...")
+  if(minPathVar %in% minEnvVar) {
+    message(paste0("The path: ", pathVar, " is correctly added to the system environment variables..."))
     TRUE
   } else {
-    warning(paste0("\n\nSelenium is not found in the path variable...\n",
+    warning(paste0("The path: ", pathVar, " is not found in the path variable...\n",
                    "execute: setPath() or add the variable manually to the path...\n",
                    "NOTE: It might be that you need to restart the system for changes to take effect..."))
     FALSE
@@ -89,7 +77,7 @@ checkEnvVar <- function(pathVar){
 
 # Setting Path variables
 #-----------------------
-setPath <- function(installPath){
+setPathVar <- function(installPath){
   
   if(sysName == "Windows") {
     shell(paste0("C:/Windows/System32/setx.exe PATH ", installPath), intern=TRUE)
@@ -127,30 +115,65 @@ copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
   }
   
   # Copy selenium server jar to the RSelenium bin folder
-  file.copy(from=seleniumPath, to=RSeleniumBinPath)
+  file.copy(from=seleniumPath, to=pathToSeleniumServer)
+}
+
+# Get path information
+#---------------------
+getPath <- function(){
+  sysInfo()
+  # System information
+  pathToBinaries <<- file.path(find.package("RSeleniumUtilities"))
+  pathToSeleniumServer <<- paste0(file.path(find.package("RSelenium")), '/bin')
+  
+  if(sysName == "Windows") {
+    installPath <<- paste0("C:/Users/", usrName, "/AppData/Local/Selenium/")
+    chromePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver.exe")
+    iePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "InternetExplorer", sysName, "/IEDriverServer.exe")
+  }
+  
+  if(sysName == "Linux") {
+    installPath <<- paste0("/home/", usrName, "/.selenium")
+    chromePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver")
+  }
+  
+  seleniumPath <<- paste0(pathToBinaries, "/bin/seleniumJar/selenium-server-standalone.jar")
 }
 
 
+getJavaPath <- function(){
+  sysInfo()
+  
+  if(sysName == "Windows") {
+    javaPath <- "C:/Program Files/Java"
+  }
+    
+  javaDirContent <- list.files(javaPath)[grep("jdk", list.files(javaPath))]
+  num <- as.numeric(gsub("[[:alpha:][:punct:]]{1, }", "", javaDirContent))
+  newestVersion <- javaDirContent[num %in% max(num)]
+  
+  paste0(javaPath, "/", newestVersion, "/bin/")
+}
 
-
+javaPath <- getJavaPath()
 
 checkEnvVar(pathVar=installPath)
+checkEnvVar(pathVar=javaPath)
 
-# java in the path?
-# C:\Program Files\Java
 
-# The Selenium Server was started with 
-# -Dwebdriver.chrome.driver=c:\path\to\your\chromedriver.exe
-sysInfo()
+envVar
+envVar <- getEnvVar()
+envVar[grep(pattern=javaPath, x=envVar)]
+
+# fullPath <- findPartialTxt(inputVector=envVar, partialTxt="C:/Program Files/Java")
+# envVar[grep("C:/Program Files/Java", envVar)]
+
+
 getPath()
-setPath(installPath=installPath)
+setPathVar(installPath=installPath)
 
-library(basleR)
-identifier <- ""
-regex <- "[[:alnum:]]{1, }"
-C:\Program Files\Java
-expr <- paste(identifier, regex, sep = "")
-output <- regmatches(input, regexpr(expr, input))
+
+
 
 C:/Program Files/Java/jdk1.7.0_21/bin
 cutTxt
