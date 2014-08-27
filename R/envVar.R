@@ -1,3 +1,5 @@
+#' @export
+
 # Overall Meta functions
 #-----------------------
 
@@ -8,6 +10,7 @@ sysInfo <- function(){
   bitFormat <<- Sys.info()["machine"][[1]]  
 }
 
+#' @export
 # Find partial text with the help of regual expressions
 findPartialTxt <- function(inputVector, partialTxt, regex="[[:alnum:][:punct:]]{1, }"){
   expr <- paste(partialTxt, regex, sep = "")
@@ -15,6 +18,7 @@ findPartialTxt <- function(inputVector, partialTxt, regex="[[:alnum:][:punct:]]{
   output
 }
 
+#' @export
 # Appending to a file on unix systems
 #------------------------------------
 appendFileUnix <- function(inputTxt, filePath){
@@ -33,6 +37,7 @@ appendFileUnix <- function(inputTxt, filePath){
   }
 }
 
+#' @export
 # Environmental Variables
 #-------------------------
 getEnvVar <- function(envVarName="Path"){
@@ -57,6 +62,7 @@ getEnvVar <- function(envVarName="Path"){
   envVar
 }
 
+#' @export
 checkEnvVar <- function(pathVar){
   envVar <- getEnvVar()
 
@@ -74,6 +80,7 @@ checkEnvVar <- function(pathVar){
   }
 }
 
+#' @export
 # Setting Path variables
 #-----------------------
 setEnvVar <- function(pathToVar){
@@ -94,7 +101,7 @@ setEnvVar <- function(pathToVar){
   }
 }
 
-
+#' @export
 # Copying of the Selenium utilities 
 #----------------------------------
 copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
@@ -118,6 +125,7 @@ copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
   file.copy(from=seleniumPath, to=pathToSeleniumServer)
 }
 
+#' @export
 # Get path information
 #---------------------
 getPath <- function(){
@@ -140,7 +148,7 @@ getPath <- function(){
   seleniumPath <<- paste0(pathToBinaries, "/bin/seleniumJar/selenium-server-standalone.jar")
 }
 
-
+#' @export
 getJavaPath <- function(){
   sysInfo()
   
@@ -154,12 +162,3 @@ getJavaPath <- function(){
   
   paste0(javaPath, "/", newestVersion, "/bin/")
 }
-
-getPath()
-javaPath <- getJavaPath()
-checkEnvVar(pathVar=installPath)
-checkEnvVar(pathVar=javaPath)
-setEnvVar(pathToVar=paste0(installPath, ';"', javaPath,'"'))
-copyUtilities(installIE=TRUE, installChrome=TRUE)
-
-rm(list = ls())
