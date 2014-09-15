@@ -88,15 +88,15 @@ setEnvVar <- function(pathToVar){
   
   if(sysName == "Windows") {
     shell(paste0('C:/Windows/System32/setx.exe Path ', pathToVar), intern=TRUE)
-    message(paste0(pathVar, "\nadded to the Windows environment path...\n"))
+    message(paste0(pathToVar, "\nadded to the Windows environment path...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
   
   if(sysName == "Linux") {
     profilePath <<- paste0("/home/", usrName, "/.profile")
     appendFileUnix('# Add Selenium to the PATH Environment', profilePath)
-    appendFileUnix(paste0("export PATH=$PATH:", pathVar), profilePath)
-    message(paste0("export PATH=$PATH:", pathVar, "\nadded to the .profile file...\n"))
+    appendFileUnix(paste0("export PATH=$PATH:", pathToVar), profilePath)
+    message(paste0("export PATH=$PATH:", pathToVar, "\nadded to the .profile file...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
 }
