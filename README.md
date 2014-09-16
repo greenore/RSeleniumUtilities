@@ -13,7 +13,7 @@ Binaries, webdrivers and a couple of helper functions for the [RSelenium][] pack
 - Internet Explorer (Windows)
 
 ### Versions numbers
-- Selenium Server (Version 2.43.1)
+- Selenium Server (2.43.1)
 - Internet Explorer Binding (2.43.0)
 - Google Chrome Binding (2.10)
 
