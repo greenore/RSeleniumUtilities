@@ -111,9 +111,9 @@ copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
   dir.create(installPath)
   
   # Copy files
-  file.copy(from=chromePath, to=installPath)
+  file.copy(from=chromePath, to=installPath, overwrite=T, recursive=T)
   if(sysName == "Windows") {
-    file.copy(from=iePath, to=installPath)
+    file.copy(from=iePath, to=installPath, overwrite=T, recursive=T)
   }
   
   if(sysName == "Linux") {
@@ -122,7 +122,7 @@ copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
   }
   
   # Copy selenium server jar to the RSelenium bin folder
-  file.copy(from=seleniumPath, to=pathToSeleniumServer)
+  file.copy(from=seleniumPath, to=pathToSeleniumServer, overwrite=T, recursive=T)
 }
 
 #' @export
