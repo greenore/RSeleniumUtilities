@@ -12,6 +12,11 @@ Binaries, webdrivers and a couple of helper functions for the [RSelenium][] pack
 - Google Chrome (Windows & Linux)
 - Internet Explorer (Windows)
 
+### Versions numbers
+Selenium Server (Version 2.43.1)
+Internet Explorer Binding (2.43.0)
+Google Chrome Binding (2.10)
+
 ### Tutorial
 The [RSelenium][] Github page has a couple of nice tutorials available. Furthermore, there is the [RSelenium Webinar][].
 
