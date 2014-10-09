@@ -10,6 +10,8 @@
 #' @section Detail:
 #' The profile directory is contained in the user directory and by default is named "Default" 
 firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="default", baseEncrypton=TRUE){
+    startServer(); Sys.sleep(2)
+  
   # System information
   sysName <- Sys.info()["sysname"][[1]]
   usrName <- Sys.info()["user"][[1]]
@@ -33,13 +35,16 @@ firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="d
     if(length(profFile) == 0){
       warning(paste0('NO PROFILE FOLDER UNDER THE NAME: "', profileName, '" ...'))
     } else {
+      remDr$open(); remDr$maxWindowSize()
       remDr
     }
     
   } else {
     remDr <- remoteDriver(browserName='firefox')
+    remDr$open(); remDr$maxWindowSize()
     remDr
   }
+  
 }
 
 #' Use Chrome Profiles
@@ -54,7 +59,8 @@ firefoxDriver <- function(useProfile=FALSE, profileName="default", profileDir="d
 #' @section Detail:
 #' The profile directory is contained in the user directory and by default is named "Default" 
 chromeDriver <- function(useProfile=FALSE, profileName="Default", profileDir="Default", internalTesting=FALSE){
-  
+  startServer(); Sys.sleep(2)
+
   # System information
   sysName <- Sys.info()["sysname"][[1]]
   usrName <- Sys.info()["user"][[1]]
@@ -88,7 +94,10 @@ chromeDriver <- function(useProfile=FALSE, profileName="Default", profileDir="De
   
   # Set remote drive according to chrome settings
   remDr <- remoteDriver(browserName='chrome', extraCapabilities=cOptions)    
+  remDr$open()
+  remDr$maxWindowSize()
   remDr
+  
 }
 
 #' Check for Server binary (baloise version)
