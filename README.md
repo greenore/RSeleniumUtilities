@@ -27,15 +27,24 @@ The [CRAN Repository Policy][] propose, as a general rule, that neither data nor
 As a result of that, the __RSeleniumUtilities__ is a binary and jar files-only package. It exist another package, [RSelenium][], which is intended to provide access to Selenium.
 
 ## Installation
-The __RSeleniumUtilities__ is not available on CRAN, but you can install it from Github with:
+The __RSeleniumUtilities__ is not available on CRAN, but you can install it from Github with devtools:
 
 ```
-library(devtools)
-install_github(repo="greenore/RSeleniumUtilities")
+install.packages("devtools")
+devtools::install_github(repo="greenore/RSeleniumUtilities")
 ```
 
 ## Usage
-
+The helper function «checkSelenium()» copies all the necessary binaries and sets the environment variables.
+```
+RSeleniumUtilities::checkSelenium()
+```
+There are three utility function for easy and automated access to the different browsers:
+```
+remDr <- ieDriver()
+remDr <- firefoxDriver(use_profile=TRUE, profile_name="selenium")
+remDr <- chromeDriver(use_profile=TRUE, profile_name="selenium", internal_testing=TRUE)
+```
 
 [Selenium]: http://docs.seleniumhq.org/
 [RSelenium]: https://github.com/ropensci/RSelenium
