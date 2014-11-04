@@ -6,20 +6,20 @@ sysInfo <- function(){
   sys.info$sys_name <- Sys.info()["sysname"][[1]]
   sys.info$usr_name <- Sys.info()["user"][[1]]
   sys.info$bit_format <- Sys.info()["machine"][[1]]
-
+  
   sys.info
 }
 
 #' @export
 ## Appending to a file on unix systems
 appendFileUnix <- function(input_txt, file_path){
- 
+  
   # If the last line is not empty, add line
   file_content <- readLines(file_path)
   if(file_content[length(file_content)] != "") {
     system(paste0("echo ''", " >> ", file_path), intern=TRUE)
   }
-    
+  
   # Add text to file 
   if(!input_txt %in% file_content) {
     system(paste0("echo '", input_txt, "'", " >> ", file_path), intern=TRUE)
@@ -56,7 +56,7 @@ getEnvVar <- function(env_var_name="Path"){
 #' @export
 checkEnvVar <- function(path_var){
   env_var <- getEnvVar()
-
+  
   min_env_var <- tolower(gsub(pattern="/", replacement="", x=env_var))
   min_path_var <- tolower(gsub(pattern="/", replacement="", x=path_var))
   
@@ -74,7 +74,7 @@ checkEnvVar <- function(path_var){
 #' @export
 ## Setting Path variables
 setEnvVar <- function(path_to_var){
-    sys.info <- sysInfo() 
+  sys.info <- sysInfo() 
   
   if(sys.info$sys_name == "Windows") {
     shell(paste0('C:/Windows/System32/setx.exe Path ', path_to_var), intern=TRUE)
@@ -91,31 +91,7 @@ setEnvVar <- function(path_to_var){
   }
 }
 
-#' @export
-## Copying of the Selenium utilities 
-copySelenium <- function(){
-    sys.info <- sysInfo() 
- 
-  # Remove and create hidden selenium directory
-  unlink(file.path(install_path), recursive=TRUE, force=TRUE)
-  dir.create(install_path)
-  
-  # Copy files
-  file.copy(from=chrome_path, to=install_path, overwrite=TRUE, recursive=TRUE)
-  if(sys.info$sys_name == "Windows") {
-    file.copy(from=ie_path, to=install_path, overwrite=TRUE, recursive=TRUE)
-  }
-  
-  if(sys.info$sys_name == "Linux") {
-    # Make file executable
-    system(paste0("chmod +x ", paste0(install_path, "/chromedriver")))
-  }
-  
-  # Copy selenium server jar to the RSelenium bin folder
-  file.copy(from=selenium_path, to=path_to_selenium_server, overwrite=T, recursive=T)
-}
-
-## Get path information
+## Get Java path information
 #' @export
 getJavaPath <- function(){
   sys.info <- sysInfo() 
@@ -123,7 +99,7 @@ getJavaPath <- function(){
   if(sys.info$sys_name == "Windows") {
     java_path <- "C:/Program Files/Java"
   }
-    
+  
   java_dir_content <- list.files(java_path)[grep("jdk", list.files(java_path))]
   num <- as.numeric(gsub("[[:alpha:][:punct:]]{1, }", "", java_dir_content))
   newest_version <- java_dir_content[num %in% max(num)]
@@ -132,6 +108,7 @@ getJavaPath <- function(){
 }
 
 #' @export
+# Get the path information
 getPath <- function(){
   sys.info <- sysInfo()
   bin.path <- list()
@@ -155,6 +132,34 @@ getPath <- function(){
   bin.path$java_path <- suppressWarnings(getJavaPath())
   
   bin.path
+}
+
+#' @export
+## Copying of the Selenium utilities 
+copySelenium <- function(){
+  sys.info <- sysInfo() 
+  bin.path <- getPath()
+  
+  # Remove and create hidden selenium directory
+  unlink(file.path(bin.path$install_path), recursive=TRUE, force=TRUE)
+  dir.create(bin.path$install_path)
+  
+  # Copy files
+  file.copy(from=bin.path$chrome_path, to=bin.path$install_path, overwrite=TRUE,
+            recursive=TRUE)
+  if(sys.info$sys_name == "Windows") {
+    file.copy(from=bin.path$ie_path, to=bin.path$install_path, overwrite=TRUE,
+              recursive=TRUE)
+  }
+  
+  if(sys.info$sys_name == "Linux") {
+    # Make file executable
+    system(paste0("chmod +x ", paste0(bin.path$install_path, "/chromedriver")))
+  }
+  
+  # Copy selenium server jar to the RSelenium bin folder
+  file.copy(from=bin.path$selenium_path, to=bin.path$path_to_selenium_server,
+            overwrite=TRUE, recursive=TRUE)
 }
 
 #' @export
