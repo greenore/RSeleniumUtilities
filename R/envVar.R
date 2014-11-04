@@ -178,4 +178,6 @@ checkSeleniumPath <- function(){
   if(check_cond==FALSE){
     copySelenium()
   }
+  
+  message("Selenium is correctly installed...")
 }
