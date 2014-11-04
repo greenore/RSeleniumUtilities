@@ -106,19 +106,6 @@ chromeDriver <- function(use_profile=FALSE, profile_name="Default",
 #' @section Detail:
 ieDriver <- function(){
   startServer(); Sys.sleep(2)
-  
-  # System information
-  sys.info <- sysInfo()
-  
-  # Find profile path according to OS
-  if(sys.info$sys_name == "Windows") {
-      profile_dir <- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Google/Chrome/User Data")
-  }
-    
-  if(sys.info$sys_name == "Linux") {
-    profile_dir <- paste0("/home/", sys.info$usr_name, "/.config/google-chrome")
-  }
-  
   remDr <- remoteDriver(browserName='internet explorer')    
   remDr$open()
   remDr$maxWindowSize()
