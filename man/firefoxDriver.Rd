@@ -3,17 +3,17 @@
 \alias{firefoxDriver}
 \title{Use Firefox Profiles}
 \usage{
-firefoxDriver(useProfile = FALSE, profileName = "default",
-  profileDir = "default", baseEncrypton = TRUE)
+firefoxDriver(use_profile = FALSE, profile_name = "default",
+  profile_dir = "default", base_encrypton = TRUE)
 }
 \arguments{
-\item{useProfile}{}
+\item{use_profile}{}
 
-\item{profileName}{Selects directory of profile to associate with the first browser launched.}
+\item{profile_name}{Selects directory of profile to associate with the first browser launched.}
 
-\item{profileDir}{Specifies the user data directory, which is where the browser will look for all of its state.}
+\item{profile_dir}{Specifies the user data directory, which is where the browser will look for all of its state.}
 
-\item{baseEncrypton}{}
+\item{base_encrypton}{}
 }
 \description{
 \code{firefoxDriver}

@@ -3,17 +3,17 @@
 \alias{chromeDriver}
 \title{Use Chrome Profiles}
 \usage{
-chromeDriver(useProfile = FALSE, profileName = "Default",
-  profileDir = "Default", internalTesting = FALSE)
+chromeDriver(use_profile = FALSE, profile_name = "Default",
+  profile_dir = "Default", internal_testing = FALSE)
 }
 \arguments{
-\item{useProfile}{}
+\item{use_profile}{}
 
-\item{profileName}{Selects directory of profile to associate with the first browser launched.}
+\item{profile_name}{Selects directory of profile to associate with the first browser launched.}
 
-\item{profileDir}{Specifies the user data directory, which is where the browser will look for all of its state.}
+\item{profile_dir}{Specifies the user data directory, which is where the browser will look for all of its state.}
 
-\item{internalTesting}{}
+\item{internal_testing}{}
 }
 \description{
 \code{chromeDriver}

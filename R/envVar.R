@@ -93,7 +93,7 @@ setEnvVar <- function(path_to_var){
 
 #' @export
 ## Copying of the Selenium utilities 
-copyUtilities <- function(){
+copySelenium <- function(){
     sys.info <- sysInfo() 
  
   # Remove and create hidden selenium directory
@@ -101,9 +101,9 @@ copyUtilities <- function(){
   dir.create(install_path)
   
   # Copy files
-  file.copy(from=chrome_path, to=install_path, overwrite=T, recursive=T)
+  file.copy(from=chrome_path, to=install_path, overwrite=TRUE, recursive=TRUE)
   if(sys.info$sys_name == "Windows") {
-    file.copy(from=ie_path, to=install_path, overwrite=T, recursive=T)
+    file.copy(from=ie_path, to=install_path, overwrite=TRUE, recursive=TRUE)
   }
   
   if(sys.info$sys_name == "Linux") {
@@ -115,31 +115,7 @@ copyUtilities <- function(){
   file.copy(from=selenium_path, to=path_to_selenium_server, overwrite=T, recursive=T)
 }
 
-#' @export
 ## Get path information
-getPath <- function(){
-  sys.info <- sysInfo() 
-  bin.path <- list()
-  
-  # System information
-  bin.path$path_to_binaries <- file.path(find.package("RSeleniumUtilities"))
-  bin.path$path_to_selenium_server <- paste0(file.path(find.package("RSelenium")), '/bin')
-  
-  if(sys.info$sys_name == "Windows") {
-    bin.path$install_path <- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Selenium/")
-    bin.path$chrome_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver.exe")
-    bin.path$ie_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "InternetExplorer", sys.info$sys_name, "/IEDriverServer.exe")
-  }
-  
-  if(sys.info$sys_name == "Linux") {
-    bin.path$install_path <- paste0("/home/", sys.info$usr_name, "/.selenium")
-    bin.path$chrome_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver")
-  }
-  
-  bin.path$selenium_path <- paste0(path_to_binaries, "/bin/seleniumJar/selenium-server-standalone.jar")
-  bin.path
-}
-
 #' @export
 getJavaPath <- function(){
   sys.info <- sysInfo() 
@@ -153,4 +129,48 @@ getJavaPath <- function(){
   newest_version <- java_dir_content[num %in% max(num)]
   
   paste0(java_path, "/", newest_version, "bin/")
+}
+
+#' @export
+getPath <- function(){
+  sys.info <- sysInfo()
+  bin.path <- list()
+  
+  # System information
+  bin.path$path_to_binaries <- file.path(find.package("RSeleniumUtilities"))
+  bin.path$path_to_selenium_server <- paste0(file.path(find.package("RSelenium")), '/bin')
+  
+  if(sys.info$sys_name == "Windows") {
+    bin.path$install_path <- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Selenium/")
+    bin.path$chrome_path <- paste0(bin.path$path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver.exe")
+    bin.path$ie_path <- paste0(bin.path$path_to_binaries, "/bin/", sys.info$bit_format, "InternetExplorer", sys.info$sys_name, "/IEDriverServer.exe")
+  }
+  
+  if(sys.info$sys_name == "Linux") {
+    bin.path$install_path <- paste0("/home/", sys.info$usr_name, "/.selenium")
+    bin.path$chrome_path <- paste0(bin.path$path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver")
+  }
+  
+  bin.path$selenium_path <- paste0(bin.path$path_to_binaries, "/bin/seleniumJar/selenium-server-standalone.jar")
+  bin.path$java_path <- suppressWarnings(getJavaPath())
+  
+  bin.path
+}
+
+#' @export
+# Check all necessary path for Selenium to run and copy if necessary the missing binaries
+checkSeleniumPath <- function(){
+  bin.path <- getPath()
+  
+  # Check if selenium and java are in the environment path
+  check_cond <- checkEnvVar(path_var=bin.path$install_path) & checkEnvVar(path_var=bin.path$java_path)
+  if(check_cond == FALSE){
+    setEnvVar(path_to_var=paste0(bin.path$install_path, ";'", bin.path$java_path,"'"))
+  }
+  
+  # Check if selenium the selenium server file is present
+  check_cond <- file.exists(paste0(bin.path$path_to_selenium_server, "/selenium-server-standalone.jar"))
+  if(check_cond==FALSE){
+    copySelenium()
+  }
 }
