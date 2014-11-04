@@ -1,79 +1,70 @@
 #' @export
 
-# Overall Meta functions
-#-----------------------
-
+## Overall Meta functions
 # Get System information
 sysInfo <- function(){
-  sysName <<- Sys.info()["sysname"][[1]]
-  usrName <<- Sys.info()["user"][[1]]
-  bitFormat <<- Sys.info()["machine"][[1]]  
+  sys_name <- Sys.info()["sysname"][[1]]
+  usr_name <- Sys.info()["user"][[1]]
+  bit_format <- Sys.info()["machine"][[1]]
+  sys.info <- data.frame(cbind(sys_name, usr_name, bit_format))
+  sys.info
 }
 
 #' @export
-# Find partial text with the help of regual expressions
-findPartialTxt <- function(inputVector, partialTxt, regex="[[:alnum:][:punct:]]{1, }"){
-  expr <- paste(partialTxt, regex, sep = "")
-  output <- regmatches(inputVector, regexpr(expr, inputVector))
-  output
-}
-
-#' @export
-# Appending to a file on unix systems
-#------------------------------------
-appendFileUnix <- function(inputTxt, filePath){
+## Appending to a file on unix systems
+appendFileUnix <- function(input_txt, file_path){
+ 
   # If the last line is not empty, add line
-  fileContent <- readLines(filePath)
-  if(fileContent[length(fileContent)] != "") {
-    system(paste0("echo ''", " >> ", filePath), intern=TRUE)
+  file_content <- readLines(file_path)
+  if(file_content[length(file_content)] != "") {
+    system(paste0("echo ''", " >> ", file_path), intern=TRUE)
   }
     
   # Add text to file 
-  if(!inputTxt %in% fileContent) {
-    system(paste0("echo '", inputTxt, "'", " >> ", filePath), intern=TRUE)
-    cat(paste0("Succesfully added:\n", inputTxt, "\nto:\n", filePath, "\n"))  
+  if(!input_txt %in% file_content) {
+    system(paste0("echo '", input_txt, "'", " >> ", file_path), intern=TRUE)
+    cat(paste0("Succesfully added:\n", input_txt, "\nto:\n", file_path, "\n"))  
   } else {
-    warning(paste0("\n\nDid not add:\n", inputTxt, "\nto:\n", filePath, "\n\nText already exists...\n"))
+    warning(paste0("\n\nDid not add:\n", input_txt, "\nto:\n", file_path, "\n\nText already exists...\n"))
   }
 }
 
 #' @export
-# Environmental Variables
-#-------------------------
-getEnvVar <- function(envVarName="Path"){
-  sysInfo()
+## Environmental Variables
+getEnvVar <- function(env_var_name="Path"){
+  sys.info <- sysInfo()
   
-  if(sysName == "Windows") {
-    envVarName <- paste0(envVarName, "=")
-    envVar <- shell('set Path', intern=TRUE)
-    envVar <- envVar[grep(envVarName, envVar)]
-    envVar <- unlist(strsplit(envVar, ";"))
-    envVar <- gsub(pattern=envVarName, replacement="", x=envVar)
-    envVar <- gsub(pattern="[\\]", replacement="/", x=envVar)
+  if(sys.info$sys_name == "Windows") {
+    env_var_name <- paste0(env_var_name, "=")
+    env_var <- shell('set Path', intern=TRUE)
+    env_var <- env_var[grep(env_var_name, env_var)]
+    env_var <- unlist(strsplit(env_var, ";"))
+    env_var <- gsub(pattern=env_var_name, replacement="", x=env_var)
+    env_var <- gsub(pattern="[\\]", replacement="/", x=env_var)
   }
   
-  if(sysName == "Linux") {
-    if(envVarName=="Path") {envVarName <- toupper(envVarName)}
-    envVarName <- paste0("$", envVarName)
-    envVar <- system(paste0('echo ', envVarName), intern=TRUE)
-    envVar <- unlist(strsplit(envVar, ":"))
+  if(sys.info$sys_name == "Linux") {
+    if(env_var_name=="Path") {env_var_name <- toupper(env_var_name)}
+    env_var_name <- paste0("$", env_var_name)
+    env_var <- system(paste0('echo ', env_var_name), intern=TRUE)
+    env_var <- unlist(strsplit(env_var, ":"))
   }
   
-  envVar
+  env_var
 }
 
 #' @export
-checkEnvVar <- function(pathVar){
-  envVar <- getEnvVar()
+checkEnvVar <- function(path_var){
+  env_var <- getEnvVar()
 
-  minEnvVar <- tolower(gsub(pattern="/", replacement="", x=envVar))
-  minPathVar <- tolower(gsub(pattern="/", replacement="", x=pathVar))
+  min_env_var <- tolower(gsub(pattern="/", replacement="", x=env_var))
+  min_path_var <- tolower(gsub(pattern="/", replacement="", x=path_var))
   
-  if(minPathVar %in% minEnvVar) {
-    message(paste0("The path: ", pathVar, " is correctly added to the system environment..."))
+  if(min_path_var %in% min_env_var) {
+    message(paste0("The path: ", path_var, " is correctly added to the system environment..."))
     TRUE
   } else {
-    warning(paste0("The path: ", pathVar, " is not found in the system environment...\n",
+    warning(paste0("The path: ", path_var, " is not found in the system environment...\n",
                    "execute: setPathVar() or add the variable manually to the path...\n",
                    "NOTE: It might be that you need to restart the system for changes to take effect..."))
     FALSE
@@ -81,84 +72,83 @@ checkEnvVar <- function(pathVar){
 }
 
 #' @export
-# Setting Path variables
-#-----------------------
-setEnvVar <- function(pathToVar){
-  sysInfo()
+## Setting Path variables
+setEnvVar <- function(path_to_var){
+    sys.info <- sysInfo() 
   
-  if(sysName == "Windows") {
-    shell(paste0('C:/Windows/System32/setx.exe Path ', pathToVar), intern=TRUE)
-    message(paste0(pathToVar, "\nadded to the Windows environment path...\n"))
+  if(sys.info$sys_name == "Windows") {
+    shell(paste0('C:/Windows/System32/setx.exe Path ', path_to_var), intern=TRUE)
+    message(paste0(path_to_var, "\nadded to the Windows environment path...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
   
-  if(sysName == "Linux") {
-    profilePath <<- paste0("/home/", usrName, "/.profile")
-    appendFileUnix('# Add Selenium to the PATH Environment', profilePath)
-    appendFileUnix(paste0("export PATH=$PATH:", pathToVar), profilePath)
-    message(paste0("export PATH=$PATH:", pathToVar, "\nadded to the .profile file...\n"))
+  if(sys.info$sys_name == "Linux") {
+    profile_path <<- paste0("/home/", sys.info$usr_name, "/.profile")
+    appendFileUnix('# Add Selenium to the PATH Environment', profile_path)
+    appendFileUnix(paste0("export PATH=$PATH:", path_to_var), profile_path)
+    message(paste0("export PATH=$PATH:", path_to_var, "\nadded to the .profile file...\n"))
     message("It might be necessary to reboot the Computer in order for the changes to take effect!!!")
   }
 }
 
 #' @export
-# Copying of the Selenium utilities 
-#----------------------------------
-copyUtilities <- function(installIE=TRUE, installChrome=TRUE){
-  sysInfo()
+## Copying of the Selenium utilities 
+copyUtilities <- function(){
+    sys.info <- sysInfo() 
+ 
   # Remove and create hidden selenium directory
-  unlink(file.path(installPath), recursive=TRUE, force=TRUE)
-  dir.create(installPath)
+  unlink(file.path(install_path), recursive=TRUE, force=TRUE)
+  dir.create(install_path)
   
   # Copy files
-  file.copy(from=chromePath, to=installPath, overwrite=T, recursive=T)
-  if(sysName == "Windows") {
-    file.copy(from=iePath, to=installPath, overwrite=T, recursive=T)
+  file.copy(from=chrome_path, to=install_path, overwrite=T, recursive=T)
+  if(sys.info$sys_name == "Windows") {
+    file.copy(from=ie_path, to=install_path, overwrite=T, recursive=T)
   }
   
-  if(sysName == "Linux") {
+  if(sys.info$sys_name == "Linux") {
     # Make file executable
-    system(paste0("chmod +x ", paste0(installPath, "/chromedriver")))
+    system(paste0("chmod +x ", paste0(install_path, "/chromedriver")))
   }
   
   # Copy selenium server jar to the RSelenium bin folder
-  file.copy(from=seleniumPath, to=pathToSeleniumServer, overwrite=T, recursive=T)
+  file.copy(from=selenium_path, to=path_to_selenium_server, overwrite=T, recursive=T)
 }
 
 #' @export
-# Get path information
-#---------------------
+## Get path information
 getPath <- function(){
-  sysInfo()
+  sys.info <- sysInfo() 
+ 
   # System information
-  pathToBinaries <<- file.path(find.package("RSeleniumUtilities"))
-  pathToSeleniumServer <<- paste0(file.path(find.package("RSelenium")), '/bin')
+  path_to_binaries <<- file.path(find.package("RSeleniumUtilities"))
+  path_to_selenium_server <<- paste0(file.path(find.package("RSelenium")), '/bin')
   
-  if(sysName == "Windows") {
-    installPath <<- paste0("C:/Users/", usrName, "/AppData/Local/Selenium/")
-    chromePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver.exe")
-    iePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "InternetExplorer", sysName, "/IEDriverServer.exe")
+  if(sys.info$sys_name == "Windows") {
+    install_path <<- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Selenium/")
+    chrome_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver.exe")
+    ie_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "InternetExplorer", sys.info$sys_name, "/IEDriverServer.exe")
   }
   
-  if(sysName == "Linux") {
-    installPath <<- paste0("/home/", usrName, "/.selenium")
-    chromePath <<- paste0(pathToBinaries, "/bin/", bitFormat, "Chrome", sysName, "/chromedriver")
+  if(sys.info$sys_name == "Linux") {
+    install_path <<- paste0("/home/", sys.info$usr_name, "/.selenium")
+    chrome_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver")
   }
   
-  seleniumPath <<- paste0(pathToBinaries, "/bin/seleniumJar/selenium-server-standalone.jar")
+  selenium_path <<- paste0(path_to_binaries, "/bin/seleniumJar/selenium-server-standalone.jar")
 }
 
 #' @export
 getJavaPath <- function(){
-  sysInfo()
+  sys.info <- sysInfo() 
   
-  if(sysName == "Windows") {
-    javaPath <- "C:/Program Files/Java"
+  if(sys.info$sys_name == "Windows") {
+    java_path <- "C:/Program Files/Java"
   }
     
-  javaDirContent <- list.files(javaPath)[grep("jdk", list.files(javaPath))]
-  num <- as.numeric(gsub("[[:alpha:][:punct:]]{1, }", "", javaDirContent))
-  newestVersion <- javaDirContent[num %in% max(num)]
+  java_dir_content <- list.files(java_path)[grep("jdk", list.files(java_path))]
+  num <- as.numeric(gsub("[[:alpha:][:punct:]]{1, }", "", java_dir_content))
+  newest_version <- java_dir_content[num %in% max(num)]
   
-  paste0(javaPath, "/", newestVersion, "/bin/")
+  paste0(java_path, "/", newest_version, "/bin/")
 }

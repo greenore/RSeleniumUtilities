@@ -34,6 +34,9 @@ library(devtools)
 install_github(repo="greenore/RSeleniumUtilities")
 ```
 
+## Usage
+
+
 [Selenium]: http://docs.seleniumhq.org/
 [RSelenium]: https://github.com/ropensci/RSelenium
 [RSelenium Webinar]: https://www.youtube.com/watch?v=ic65SWRWrKA

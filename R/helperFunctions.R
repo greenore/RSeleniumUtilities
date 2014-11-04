@@ -97,5 +97,4 @@ chromeDriver <- function(useProfile=FALSE, profileName="Default", profileDir="De
   remDr$open()
   remDr$maxWindowSize()
   remDr
-  
 }
