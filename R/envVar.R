@@ -61,7 +61,7 @@ checkEnvVar <- function(path_var){
   min_path_var <- tolower(gsub(pattern="/", replacement="", x=path_var))
   
   if(min_path_var %in% min_env_var) {
-    message(paste0("The path: ", path_var, " is correctly added to the system environment..."))
+#     message(paste0("The path: ", path_var, " is correctly added to the system environment..."))
     TRUE
   } else {
     warning(paste0("The path: ", path_var, " is not found in the system environment...\n",
