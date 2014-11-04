@@ -2,10 +2,11 @@
 ## Overall Meta functions
 # Get System information
 sysInfo <- function(){
-  sys_name <- Sys.info()["sysname"][[1]]
-  usr_name <- Sys.info()["user"][[1]]
-  bit_format <- Sys.info()["machine"][[1]]
-  sys.info <- data.frame(cbind(sys_name, usr_name, bit_format))
+  sys.info <- list()
+  sys.info$sys_name <- Sys.info()["sysname"][[1]]
+  sys.info$usr_name <- Sys.info()["user"][[1]]
+  sys.info$bit_format <- Sys.info()["machine"][[1]]
+
   sys.info
 }
 
@@ -118,23 +119,25 @@ copyUtilities <- function(){
 ## Get path information
 getPath <- function(){
   sys.info <- sysInfo() 
- 
+  bin.path <- list()
+  
   # System information
-  path_to_binaries <<- file.path(find.package("RSeleniumUtilities"))
-  path_to_selenium_server <<- paste0(file.path(find.package("RSelenium")), '/bin')
+  bin.path$path_to_binaries <- file.path(find.package("RSeleniumUtilities"))
+  bin.path$path_to_selenium_server <- paste0(file.path(find.package("RSelenium")), '/bin')
   
   if(sys.info$sys_name == "Windows") {
-    install_path <<- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Selenium/")
-    chrome_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver.exe")
-    ie_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "InternetExplorer", sys.info$sys_name, "/IEDriverServer.exe")
+    bin.path$install_path <- paste0("C:/Users/", sys.info$usr_name, "/AppData/Local/Selenium/")
+    bin.path$chrome_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver.exe")
+    bin.path$ie_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "InternetExplorer", sys.info$sys_name, "/IEDriverServer.exe")
   }
   
   if(sys.info$sys_name == "Linux") {
-    install_path <<- paste0("/home/", sys.info$usr_name, "/.selenium")
-    chrome_path <<- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver")
+    bin.path$install_path <- paste0("/home/", sys.info$usr_name, "/.selenium")
+    bin.path$chrome_path <- paste0(path_to_binaries, "/bin/", sys.info$bit_format, "Chrome", sys.info$sys_name, "/chromedriver")
   }
   
-  selenium_path <<- paste0(path_to_binaries, "/bin/seleniumJar/selenium-server-standalone.jar")
+  bin.path$selenium_path <- paste0(path_to_binaries, "/bin/seleniumJar/selenium-server-standalone.jar")
+  bin.path
 }
 
 #' @export
