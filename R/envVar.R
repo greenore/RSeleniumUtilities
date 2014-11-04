@@ -164,7 +164,7 @@ copySelenium <- function(){
 
 #' @export
 # Check all necessary path for Selenium to run and copy if necessary the missing binaries
-checkSeleniumPath <- function(){
+checkSelenium <- function(){
   bin.path <- getPath()
   
   # Check if selenium and java are in the environment path
@@ -179,5 +179,5 @@ checkSeleniumPath <- function(){
     copySelenium()
   }
   
-  message("Selenium is correctly installed...")
+  message("The Selenium binaries are correctly installed...")
 }
