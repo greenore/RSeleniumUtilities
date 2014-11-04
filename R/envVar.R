@@ -1,5 +1,4 @@
 #' @export
-
 ## Overall Meta functions
 # Get System information
 sysInfo <- function(){
