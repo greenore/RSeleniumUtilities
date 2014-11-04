@@ -2,7 +2,7 @@
 
 export(appendFileUnix)
 export(checkEnvVar)
-export(checkSeleniumPath)
+export(checkSelenium)
 export(chromeDriver)
 export(copySelenium)
 export(firefoxDriver)
