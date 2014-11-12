@@ -29,9 +29,16 @@ As a result of that, the __RSeleniumUtilities__ is a binary and jar files-only p
 ## Installation
 The __RSeleniumUtilities__ is not available on CRAN, but you can install it from Github with devtools:
 
+#### Windows:
 ```
-install.packages("devtools")
-devtools::install_github(repo="greenore/RSeleniumUtilities")
+source("https://rawgit.com/greenore/initR/master/init.R")
+packagesGithub("RSeleniumUtilities", repo_name="greenore")
+```
+
+#### Linux:
+```
+source(pipe(paste("wget -O -", "https://rawgit.com/greenore/initR/master/init.R")))
+packagesGithub("RSeleniumUtilities", repo_name="greenore")
 ```
 
 ## Usage
