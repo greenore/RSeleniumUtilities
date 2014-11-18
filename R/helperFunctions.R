@@ -1,8 +1,5 @@
-# Helper Functions 1
-#-------------------
-
+## Helper Functions
 #' @export
-# Werden für Schritt 1 benoetigt (Fahrzeug, Lenker und Deckung)
 activateDropDown <- function(idButton, idMenu){
   element1 <- remDr$findElement(using = "id", value = idButton)
   element2 <- remDr$findElement(using = "id", value = idMenu)
@@ -27,6 +24,7 @@ selectLinkTxt <- function(element, linkTxt){
 # Minimize string distance (Damerau-Levenshtein Method)
 minStringDistance <- function(targ_var, source_var, method='osa'){
   require(transformR)
+  require(stringdist)
   
   targ_var <- changeUmlaute(tolower(targ_var))
   targ_var <- gsub(' ', '', targ_var)     # rm whitespace
