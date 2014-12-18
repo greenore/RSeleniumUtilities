@@ -104,7 +104,7 @@ getJavaPath <- function(){
   num <- as.numeric(gsub("[[:alpha:][:punct:]]{1, }", "", java_dir_content))
   newest_version <- java_dir_content[num %in% max(num)]
   
-  paste0(java_path, "/", newest_version, "bin/")
+  paste0(java_path, "/", newest_version, "/bin/")
 }
 
 #' @export
