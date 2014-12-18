@@ -10,11 +10,7 @@ Description: The RSelenium package provides a set of R bindings for the
     couple of helper functions for it.
 License: AGPL-3
 Depends:
-    R (>= 3.0.0),
-    RSelenium,
-    RCurl,
-    RJSONIO,
-    XML
+    R (>= 3.0.0)
 Imports:
     RSelenium,
     methods,caTools,tools
