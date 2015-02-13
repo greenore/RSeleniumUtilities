@@ -170,7 +170,7 @@ checkSelenium <- function(){
   # Check if selenium and java are in the environment path
   check_cond <- checkEnvVar(path_var=bin.path$install_path) & checkEnvVar(path_var=bin.path$java_path)
   if(check_cond == FALSE){
-    setEnvVar(path_to_var=paste0(bin.path$install_path, ";'", bin.path$java_path,"'"))
+    setEnvVar(path_to_var=paste0(bin.path$install_path, ";", bin.path$java_path))
   }
   
   # Check if selenium the selenium server file is present
